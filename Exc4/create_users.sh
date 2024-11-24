@@ -12,7 +12,7 @@ create_user() {
 	  -CA ~/.minikube/ca.crt \
 	  -CAkey ~/.minikube/ca.key \
 	  -CAcreateserial \
-	  -out $1.crt 
+	  -out $1.crt \
 	  -days 500
 	  
   kubectl config set-credentials $1 \

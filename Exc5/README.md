@@ -20,20 +20,12 @@ kubectl run admin-front-end-app --image=nginx --labels role=admin-front-end --ex
 kubectl run admin-back-end-api-app --image=nginx --labels role=admin-back-end-api --expose --port 80
 ```
 
-Проверяем разрешенный трафик
-``` shell
-kubectl run test-$RANDOM --namespace=front-end --rm -i -t --image=alpine -- sh
-/ # wget -qO- --timeout=2 http://back-end-api
-
-kubectl run test-$RANDOM --namespace=admin-front-end --rm -i -t --image=alpine -- sh
-/ # wget -qO- --timeout=2 http://admin-back-end-api
-```
-
 Проверяем запрещенный трафик
 ``` shell
-kubectl run test-$RANDOM --namespace=front-end --rm -i -t --image=alpine -- sh
-/ # wget -qO- --timeout=2 http://admin-back-end-api
+kubectl run test-$RANDOM --rm -i -t --image=alpine -- wget -qO- --timeout=2 http://back-end-api-app
+```
 
-kubectl run test-$RANDOM --namespace=admin-front-end --rm -i -t --image=alpine -- sh
-/ # wget -qO- --timeout=2 http://back-end-api
+Проверяем разрешенный трафик
+``` shell
+kubectl exec -it front-end-app -- curl http://back-end-api-app 
 ```
